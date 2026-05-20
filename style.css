@@ -1,0 +1,346 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin: 0;
+}
+
+#gameWrapper {
+  position: relative;
+  /* 16:9 비율 유지하며 뷰포트 꽉 채우기 */
+  width: min(100vw, 177.78vh);   /* 177.78vh = 100vh * 16/9 */
+  height: min(100vh, 56.25vw);  /* 56.25vw  = 100vw * 9/16 */
+}
+
+canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: crosshair;
+}
+
+/* ── 별 레이어 ── */
+#starsLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--dur) infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: 0.15; }
+  to   { opacity: 1; }
+}
+
+/* ── 공통 hidden ── */
+.hidden { display: none !important; }
+
+/* ── 공통: 화면 오버레이 ── */
+#titleScreen,
+#tutorialScreen,
+.overlay-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+/* ══════════════════════════════
+   타이틀 화면
+══════════════════════════════ */
+#titleScreen {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 52px;
+  padding-bottom: 20px;
+}
+
+/* 제목 — SUIT Bold, 굵고 깔끔 */
+@import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@main/fonts/variable/woff2/SUIT-Variable.woff2');
+
+.title-text {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.8);
+  position: relative;
+  z-index: 12;
+  margin-bottom: 36px;
+  word-break: keep-all;
+}
+
+/* 버튼 묶음: 세로 정렬 */
+.title-btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  z-index: 12;
+}
+
+/* 시작하기 / 나가기 이미지 버튼 */
+.title-img-btn {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.15s, filter 0.15s;
+}
+.title-img-btn:hover  { transform: scale(1.05); filter: brightness(1.1); }
+.title-img-btn:active { transform: scale(0.97); }
+.title-img-btn img {
+  width: 160px;
+  display: block;
+}
+
+/* ══════════════════════════════
+   튜토리얼 화면
+══════════════════════════════ */
+#tutorialScreen {
+  background: rgba(12, 9, 30, 0.93);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+}
+
+.tutorial-card {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 36px 44px 28px;
+  width: 560px;
+  text-align: center;
+}
+
+.tut-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #ffe9b2;
+  margin-bottom: 22px;
+}
+
+.tut-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 10px 16px;
+}
+
+.tut-ticket {
+  width: 110px;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  flex-shrink: 0;
+}
+
+.tut-desc { text-align: left; flex: 1; }
+.tut-desc p { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.7; }
+.tut-desc b { color: white; }
+
+.tut-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 14px;
+  margin-bottom: 6px;
+}
+.tut-label.good { background: #3a7bd5; color: white; }
+.tut-label.bad  { background: #e05555; color: white; }
+
+.go-btn {
+  margin-top: 20px;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.15s;
+}
+.go-btn:hover  { transform: scale(1.07); }
+.go-btn:active { transform: scale(0.96); }
+.go-btn img { width: 100px; }
+
+/* ══════════════════════════════
+   HUD
+══════════════════════════════ */
+#hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
+}
+#hud.hidden { display: none !important; }
+
+#livesRow { display: flex; gap: 6px; align-items: center; }
+.life-icon {
+  width: 48px;
+  height: auto;
+  transition: all 0.3s;
+}
+.life-icon.lost { opacity: 0; transform: scale(0.5); }
+
+/* 점수 박스 - 피그마 스타일 */
+#scoreBox {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 8px;
+  pointer-events: none;
+}
+#scoreLabel {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.15em;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+  line-height: 1;
+}
+#scoreInner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+#scoreTicketL, #scoreTicketR {
+  width: 36px;
+  height: auto;
+}
+#score {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  line-height: 1;
+  min-width: 60px;
+  text-align: center;
+}
+
+.pause-btn {
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  pointer-events: all;
+  transition: transform 0.15s;
+}
+.pause-btn:hover { transform: scale(1.1); }
+
+/* 콤보 */
+.combo-el {
+  position: absolute;
+  top: 78px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffe066;
+  text-shadow: 0 0 18px rgba(255,210,40,0.9);
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity .25s;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════
+   일시정지 / 게임오버 공통
+══════════════════════════════ */
+.overlay-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10,8,24,0.82);
+  backdrop-filter: blur(12px);
+}
+
+/* ── 일시정지 ── */
+.pause-card { text-align: center; }
+.pause-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 46px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 28px;
+  text-shadow: 0 0 20px rgba(200,180,255,0.6);
+}
+.pause-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.pause-btns .img-btn img { width: 160px; }
+
+/* ── 게임오버 ── */
+.go-panel { text-align: center; z-index: 2; }
+.go-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 68px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 0 50px rgba(200,180,255,0.7);
+  letter-spacing: .04em;
+  margin-bottom: 14px;
+}
+.score-box {
+  background: rgba(255,255,255,0.1);
+  border: 2.5px solid rgba(255,255,255,0.45);
+  border-radius: 999px;
+  padding: 10px 52px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 28px;
+  backdrop-filter: blur(6px);
+}
+.go-btns { display: flex; gap: 20px; justify-content: center; }
+.go-btns .img-btn img { width: 150px; }
+
+/* ── 이미지 버튼 공통 ── */
+.img-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s, filter 0.15s;
+  display: inline-block;
+}
+.img-btn:hover  { transform: scale(1.06); filter: brightness(1.1); }
+.img-btn:active { transform: scale(0.97); }
+.img-btn img    { display: block; }
+
+/* ── 불꽃 팝 ── */
+@keyframes flamePop {
+  0%   { opacity: 1; transform: scale(1); }
+  60%  { opacity: 1; transform: scale(1.4) translateY(-6px); }
+  100% { opacity: 0; transform: scale(0.6) translateY(-12px); }
+}

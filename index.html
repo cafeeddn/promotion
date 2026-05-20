@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>하늘고래의 12번째 소원</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="gameWrapper">
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- 별 레이어 -->
+  <div id="starsLayer"></div>
+
+  <!-- ── 타이틀 화면 ── -->
+  <div id="titleScreen">
+    <!-- 제목 -->
+    <div class="title-text">하늘고래의<br>12번째 소원</div>
+
+    <!-- 버튼 묶음 -->
+    <div class="title-btn-group">
+      <div id="startBtnWrap" class="title-img-btn">
+        <img id="startBtnImg" src="assets/Property 1=Default.png" alt="시작하기"/>
+      </div>
+      <div id="exitTitleBtn" class="title-img-btn">
+        <img src="assets/skrkrl.png" alt="나가기"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- 튜토리얼은 canvas에 How to play.png로 그림 / goBtn 불필요 -->
+
+  <!-- ── HUD ── -->
+  <div id="hud" class="hidden">
+    <div id="livesRow">
+      <img id="life0" class="life-icon" src="assets/Property 1=Def1ault.png" alt="목숨"/>
+      <img id="life1" class="life-icon" src="assets/Property 1=Def1ault.png" alt="목숨"/>
+      <img id="life2" class="life-icon" src="assets/Property 1=Def1ault.png" alt="목숨"/>
+    </div>
+    <!-- 점수는 canvas에 직접 그림, score span은 JS에서 값 참조용 -->
+    <span id="score" style="display:none">0</span>
+    <img id="pauseBtnImg" src="assets/Property 1=V33ariant2.png" class="pause-btn" alt="일시정지"/>
+    <div id="comboEl" class="combo-el"></div>
+  </div>
+
+  <!-- ── 일시정지 화면 ── -->
+  <div id="pauseScreen" class="hidden overlay-screen">
+    <div class="pause-card">
+      <p class="pause-title">일시정지</p>
+      <div class="pause-btns">
+        <div class="img-btn" id="resumeBtn">
+          <img src="assets/Property 1=De33fault.png" alt="계속하기"/>
+        </div>
+        <div class="img-btn" id="pauseExitBtn">
+          <img src="assets/button - 나가기.png" alt="나가기" style="width:160px"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 게임오버 화면 ── -->
+  <div id="gameOverScreen" class="hidden overlay-screen">
+    <div class="go-panel">
+      <p class="go-title">GAME OVER</p>
+      <div class="score-box">점수 : <span id="finalScore">0</span></div>
+      <div class="go-btns">
+        <div class="img-btn" id="retryBtn">
+          <img src="assets/Property 1=Default22.png" alt="다시하기"/>
+        </div>
+        <div class="img-btn" id="exitBtn">
+          <img src="assets/skrkrl.png" alt="나가기"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
