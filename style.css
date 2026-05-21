@@ -72,10 +72,17 @@ canvas {
 /* 제목 — SUIT Bold, 굵고 깔끔 */
 @import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@main/fonts/variable/woff2/SUIT-Variable.woff2');
 
+/* 사천우주체 */
+@font-face {
+  font-family: 'SacheonUju';
+  src: url('assets/SacheonUju-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
 .title-text {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'SacheonUju', 'Noto Sans KR', sans-serif;
   font-size: 52px;
-  font-weight: 900;
+  font-weight: normal;
   color: #ffffff;
   line-height: 1.2;
   letter-spacing: -0.01em;
