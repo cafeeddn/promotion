@@ -389,8 +389,29 @@ function startGame() {
 
   showOnly(null);
   document.getElementById('hud').classList.remove('hidden');
-  clearInterval(spawnInterval);
-  spawnInterval = setInterval(createTicket, 1800);
+  clearTimeout(spawnInterval);
+
+  // 난이도 상승: 10초마다 스폰 간격 단축, 후반엔 2~3개 동시 스폰
+  let gameStartTime = Date.now();
+  function spawnTick() {
+    if (!running || paused) return;
+    const elapsed = (Date.now() - gameStartTime) / 1000; // 경과 초
+
+    // 스폰 간격: 처음 1800ms → 30초 후 900ms
+    const interval = Math.max(900, 1800 - elapsed * 15);
+
+    // 동시 스폰 수: 0~20초=1개, 20~40초=1~2개, 40초+=2~3개
+    let count = 1;
+    if (elapsed > 40) count = Math.random() < 0.5 ? 2 : 3;
+    else if (elapsed > 20) count = Math.random() < 0.4 ? 2 : 1;
+
+    for (let i = 0; i < count; i++) {
+      setTimeout(createTicket, i * 200); // 살짝 시차 두고 스폰
+    }
+
+    spawnInterval = setTimeout(spawnTick, interval);
+  }
+  spawnTick();
   loop();
 }
 
@@ -423,7 +444,7 @@ function drawGameOverCanvas() {
 
 function gameOver() {
   running = false;
-  clearInterval(spawnInterval);
+  clearTimeout(spawnInterval);
   document.getElementById('finalScore').innerText = score;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGameOverCanvas();
@@ -584,7 +605,7 @@ function initUI() {
   });
   document.getElementById('pauseExitBtn').addEventListener('click', () => {
     running = false; paused = false;
-    clearInterval(spawnInterval);
+    clearTimeout(spawnInterval);
     showOnly('titleScreen');
     drawTitleCanvas();
   });
@@ -594,9 +615,15 @@ function initUI() {
     drawTitleCanvas();
   });
 
+  // 드래그할 때만 슬라이스 (mousedown 상태에서 move)
+  let isMouseDown = false;
+  canvas.addEventListener('mousedown', () => { isMouseDown = true; });
+  canvas.addEventListener('mouseup',   () => { isMouseDown = false; });
+  canvas.addEventListener('mouseleave',() => { isMouseDown = false; });
+
   // 마우스 슬라이스
   canvas.addEventListener('mousemove', e => {
-    if (!running || paused) return;
+    if (!running || paused || !isMouseDown) return;
     const r = canvas.getBoundingClientRect();
     slice(
       (e.clientX - r.left) * (CW / r.width),
