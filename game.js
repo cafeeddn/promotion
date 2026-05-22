@@ -596,8 +596,7 @@ function initUI() {
     showOnly(null);
     document.getElementById('hud').classList.remove('hidden');
     clearTimeout(spawnInterval);
-    if (spawnTick) spawnTick(); // 스폰 재시작
-    loop();
+    if (spawnTick) spawnTick(); // 스폰만 재시작, loop는 이미 돌고 있음
   });
   document.getElementById('pauseExitBtn').addEventListener('click', () => {
     running = false; paused = false;
