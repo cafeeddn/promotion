@@ -442,7 +442,7 @@ function gameOver() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawGameOverCanvas();
   showOnly('gameOverScreen');
-  document.getElementById('hud').classList.remove('hidden');
+  document.getElementById('hud').classList.add('hidden');
 }
 
 // ────────────────────────────────────────────
