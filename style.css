@@ -284,6 +284,11 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
+}
+
+/* 일시정지만 어둡게 */
+#pauseScreen {
   background: rgba(10,8,24,0.82);
   backdrop-filter: blur(12px);
 }
