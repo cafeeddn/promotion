@@ -29,5 +29,5 @@ const ASSET_SRCS = {
   bg_title:     "assets/title_screen.jpg",
   bg_tutorial:  "assets/Main Play - How to play.png",
   bg_play:      "assets/Main Play.png",
-  bg_result:    "assets/result-screen-D.jpg",
+  bg_result:    "assets/result-screen-D.png",
 };
