@@ -332,6 +332,28 @@ canvas {
 .go-btns { display: flex; gap: 20px; justify-content: center; }
 .go-btns .img-btn img { width: 150px; }
 
+/* 수요조사 버튼 */
+.survey-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, transform 0.15s;
+}
+.survey-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(1.04);
+}
+
 /* ── 이미지 버튼 공통 ── */
 .img-btn {
   background: none;
